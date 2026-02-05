@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Terima Kasih - Ulang Tahunku</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Lora:wght@400;500;600&display=swap');
+        
+        body {
+            font-family: 'Lora', serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        
+        .newspaper-title {
+            font-family: 'Playfair Display', serif;
+            letter-spacing: 0.1em;
+        }
+        
+        .paper-texture {
+            background-color: #f4e4c1;
+            background-image: 
+                repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(139, 115, 85, 0.03) 2px, rgba(139, 115, 85, 0.03) 4px),
+                repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(139, 115, 85, 0.03) 2px, rgba(139, 115, 85, 0.03) 4px);
+        }
+        
+        .tape {
+            background: rgba(222, 184, 135, 0.5);
+            transform: rotate(-2deg);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .photo-frame {
+            border: 8px solid #8b7355;
+            background: #d4af77;
+            box-shadow: 
+                inset 0 0 20px rgba(0,0,0,0.1),
+                0 5px 15px rgba(0,0,0,0.3);
+        }
+        
+        .spiral {
+            width: 60px;
+            height: 60px;
+            border: 4px solid #c41e3a;
+            border-radius: 50%;
+            position: relative;
+        }
+        
+        .spiral::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 35px;
+            height: 35px;
+            border: 4px solid #c41e3a;
+            border-radius: 50%;
+        }
+        
+        .underline-accent {
+            border-bottom: 3px solid #000;
+            display: inline-block;
+        }
+        
+        .music-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+        
+        .music-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+        }
+        
+        .music-btn svg {
+            width: 30px;
+            height: 30px;
+            fill: white;
+        }
+        
+        .music-btn.muted {
+            background: linear-gradient(135deg, #6b7280 0%, #4b5563 100%);
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        
+        .music-btn.playing {
+            animation: pulse 2s infinite;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex items-center justify-center p-4 md:p-8">
+    
+    <!-- Audio Element -->
+    <!-- GANTI URL LAGU DI SINI -->
+    <audio id="bgMusic" loop>
+        <source src="hbdSongPianoAndSax.mp3" type="audio/mpeg">
+    </audio>
+    
+    <!-- Music Control Button -->
+    <div id="musicBtn" class="music-btn playing" onclick="toggleMusic()">
+        <svg id="playIcon" viewBox="0 0 24 24">
+            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/>
+        </svg>
+        <svg id="muteIcon" viewBox="0 0 24 24" style="display: none;">
+            <path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z"/>
+        </svg>
+    </div>
+    
+    <!-- Container Utama -->
+    <div class="relative max-w-3xl w-full">
+        
+        <!-- Paper dengan efek selotip -->
+        <div class="relative paper-texture rounded-lg shadow-2xl p-8 md:p-12 transform rotate-1">
+            
+            <!-- Tape effect di pojok -->
+            <div class="tape absolute -top-4 left-8 w-32 h-8 md:w-40 md:h-10"></div>
+            <div class="tape absolute -top-4 right-8 w-32 h-8 md:w-40 md:h-10"></div>
+            <div class="tape absolute -bottom-4 left-16 w-28 h-8 md:w-36 md:h-10 rotate-3"></div>
+            <div class="tape absolute -bottom-4 right-16 w-28 h-8 md:w-36 md:h-10 -rotate-3"></div>
+            
+            <!-- Star decoration -->
+            <div class="absolute -top-6 left-4 text-6xl text-red-600">★</div>
+            
+            <!-- Header -->
+            <div class="text-center mb-8">
+                <h1 class="newspaper-title text-5xl md:text-7xl font-black mb-2">DEAR EGIT</h1>
+                <div class="flex items-center justify-between text-xs md:text-sm font-semibold px-4">
+                    <span>#SEMAK TAPI PAGI</span>
+                    <span>#VOL.01</span>
+                    <span>SABTU, 19 FEB 2026</span>
+                </div>
+            </div>
+            
+            <!-- Garis pembatas -->
+            <div class="border-t-4 border-b-4 border-black py-1 mb-8"></div>
+            
+            <!-- Content Area -->
+            <div class="grid md:grid-cols-2 gap-8 items-start">
+                
+                <!-- Judul Artikel -->
+                <div>
+                    <h2 class="newspaper-title text-4xl md:text-5xl font-black leading-tight mb-6">
+                        SEORANG REMAJA YANG SUKA MARAH
+                    </h2>
+                </div>
+                
+                <!-- Photo Frame -->
+                <div class="relative">
+                    <div class="photo-frame p-3">
+                        <!-- GANTI FOTO DI SINI -->
+                        <img src="fotoOfUs.jpeg" 
+                             alt="Foto Ulang Tahun" 
+                             class="w-full aspect-square object-cover">
+                    </div>
+                    <!-- Spiral decoration -->
+                    <div class="spiral absolute -right-4 -top-4"></div>
+                    
+                    <!-- Star accent -->
+                    <div class="absolute -left-6 top-1/2 text-5xl text-red-600 transform -rotate-12">★</div>
+                </div>
+            </div>
+            
+            <!-- Long Text Content -->
+            <div class="mt-8 text-justify text-sm md:text-base leading-relaxed space-y-4">
+                
+                <!-- GANTI UCAPAN PANJANG DI SINI -->
+                <p>
+                    Untuk Egit di masa depan, teruslah bertumbuh namun jangan 
+                    biarkan amarahmu yang menegangkan kendali. Semoga kamu 
+                    menemukan cara untuk mengubah api di dadamu menjadi 
+                    kekuatan yang bangga, bukan yang menghanguskan. Tetaplah 
+                    menjadi sosok yang jujur pada perasaan, tapi belajarlah untuk 
+                    lebih lembut pada dirimu sendiri dan orang-orang yang tulus 
+                    menyayangimu. Dunia mungkin tidak selalu mudah, tapi 
+                    dengan hati yang lebih lapang, semua akan terasa lebih ringan.
+                </p>
+                
+                <p>
+                    Terima kasih banyak untuk kalian semua yang sudah meluangkan 
+                    waktu untuk datang ke pesta ulang tahunku! Kehadiran kalian 
+                    benar-benar membuat hari itu jadi spesial dan berkesan banget. 
+                    Semua tawa, cerita, dan momen kebersamaan yang kita bagikan 
+                    adalah hadiah terbaik yang bisa aku terima. 
+                </p>
+                
+                <p>
+                    Aku sangat bersyukur punya teman-teman seperti kalian yang 
+                    selalu ada dan mendukung. Semoga persahabatan kita akan terus 
+                    bertahan dan kita bisa menciptakan lebih banyak kenangan indah 
+                    bersama. Sekali lagi, terima kasih dari lubuk hati yang paling dalam!
+                </p>
+                
+            </div>
+            
+            <!-- Garis penutup -->
+            <div class="border-t-4 border-black mt-8 pt-4"></div>
+            
+            <!-- Footer signature -->
+            <div class="text-center mt-6">
+                <p class="newspaper-title text-2xl font-bold">~ Dengan Cinta ~</p>
+                <p class="text-lg mt-2 font-semibold">EGIT</p>
+            </div>
+            
+        </div>
+        
+    </div>
+    
+    <script>
+        const music = document.getElementById('bgMusic');
+        const musicBtn = document.getElementById('musicBtn');
+        const playIcon = document.getElementById('playIcon');
+        const muteIcon = document.getElementById('muteIcon');
+        let isPlaying = false;
+        
+        // Coba autoplay saat halaman dimuat
+        window.addEventListener('load', function() {
+            music.play().then(() => {
+                isPlaying = true;
+                musicBtn.classList.add('playing');
+            }).catch(error => {
+                // Autoplay diblokir, tunggu user interaction
+                console.log('Autoplay diblokir, klik tombol untuk memutar musik');
+                isPlaying = false;
+                musicBtn.classList.remove('playing');
+            });
+        });
+        
+        function toggleMusic() {
+            if (isPlaying) {
+                music.pause();
+                isPlaying = false;
+                musicBtn.classList.remove('playing');
+                musicBtn.classList.add('muted');
+                playIcon.style.display = 'none';
+                muteIcon.style.display = 'block';
+            } else {
+                music.play();
+                isPlaying = true;
+                musicBtn.classList.add('playing');
+                musicBtn.classList.remove('muted');
+                playIcon.style.display = 'block';
+                muteIcon.style.display = 'none';
+            }
+        }
+    </script>
+    
+</body>
+</html>
